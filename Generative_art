@@ -1,0 +1,48 @@
+
+width = 840
+height = width
+ss = 70   # ss means square size
+
+
+def setup():
+    size(width,height)
+    background(255)
+
+def makeMap():
+    ost = width - ss #offset
+    
+    main_col = [random(255),random(255),random(255)]
+    off_col  = [random(255),random(255),random(255)]
+    shading  = [random(255),random(255),random(255)]
+    
+    
+    for i in range(0,width/2,ss):
+        for j in range(0,width/2,ss):
+            if random(0,1) < 0.3:
+                fill(main_col[0],main_col[1],main_col[2])
+                rect(j,i,ss,ss)
+                rect(ost-j,i,ss,ss)
+                rect(j,ost-i,ss,ss)
+                rect(ost-j,ost-i,ss,ss)
+            elif random(0,1) < 0.2:
+                fill(off_col[0],off_col[1],off_col[2])
+                rect(j,i,ss,ss)
+                rect(ost-j,i,ss,ss)
+                rect(j,ost-i,ss,ss)
+                rect(ost-j,ost-i,ss,ss)
+            elif random(0,1) < 0.1:
+                fill(shading[0],shading[1],shading[2])
+                rect(j,i,ss,ss)
+                rect(ost-j,i,ss,ss)
+                rect(j,ost-i,ss,ss)
+                rect(ost-j,ost-i,ss,ss)
+            else:
+                pass
+
+def draw():
+    
+    if mousePressed:
+     background(255)
+     noStroke()
+     makeMap()
+    pass
