@@ -1,0 +1,91 @@
+width = 800
+height = 800
+
+def setup():
+    size(width,height)
+    background(255)
+
+freq = 10
+Noisemap = []
+
+def NewperlinNoise():
+    global Noisemap
+    Noisemap = []
+    for i in range(0,(height/freq)):
+        Noisemap.append([])
+        for j in range(0, (width/freq)):
+            Noisemap[i].append(random(0,1))
+    
+def evolveNoise():
+    Neighbours = []
+    avg = 0
+    
+    for i in range(0,(height/freq)):
+        for j in range(0, (width/freq)):
+#This is the row above
+            Neighbours.append(Noisemap[i-1][j-1])
+            Neighbours.append(Noisemap[i-1][j])
+            #Neighbours.append(Noisemap[i-1][j+1])
+            avg += Noisemap[i-1][j-1]
+            avg += Noisemap[i-1][j]
+            #avg += Noisemap[i-1][j+1]
+#
+            Neighbours.append(Noisemap[i][j-1])
+            avg += Noisemap[i][j-1]
+# This is the current
+            #Neighbours.append(Noisemap[i][j+1])
+            #avg += Noisemap[i][j+1]
+#
+#This is the row below    
+            #Neighbours.append(Noisemap[i+1][j-1])
+            #Neighbours.append(Noisemap[i+1][j])
+            #Neighbours.append(Noisemap[i+1][j+1])
+            #avg += Noisemap[i+1][j-1]
+            #avg += Noisemap[i+1][j]
+            #avg += Noisemap[i+1][j+1]
+#ones where j is greater than
+            if j <= 78:
+                Neighbours.append(Noisemap[i-1][j+1])
+                avg += Noisemap[i-1][j+1]
+                Neighbours.append(Noisemap[i][j+1])
+                avg += Noisemap[i][j+1]
+            
+            if i <= 78:
+                avg += Noisemap[i+1][j-1]
+                avg += Noisemap[i+1][j]
+                Neighbours.append(Noisemap[i+1][j-1])
+                Neighbours.append(Noisemap[i+1][j])
+            
+            if i <= 78 and j <= 78:
+                Neighbours.append(Noisemap[i+1][j+1])
+                avg += Noisemap[i+1][j+1]
+            
+            Noisemap[i][j] = avg/len(Neighbours)
+            Neighbours = []
+            avg = 0
+            
+    pass
+
+def drawNoise():
+    for i in range(0,(height/freq)):
+        currentRecY = i*freq
+        for j in range(0, (width/freq)):
+            currentRecX = j*freq
+            if Noisemap[i][j] > 0.5:
+                fill(Noisemap[i][j]*255)
+                noStroke()
+                rect(currentRecX,currentRecY,freq,freq)
+    pass
+    
+def draw():
+    
+    if mousePressed:
+     background(255)
+     NewperlinNoise()
+     drawNoise()
+     
+    if ((keyPressed) and (key == 'e')):
+     background(255)
+     evolveNoise()
+     drawNoise()
+    pass
